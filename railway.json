@@ -1,0 +1,35 @@
+{
+  "$schema": "https://railway.app/v1.schema.json",
+  "services": {
+    "backend": {
+      "source": {
+        "root": "."
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "Dockerfile"
+      },
+      "deploy": {
+        "startCommand": "uvicorn server:app --host 0.0.0.0 --port $PORT",
+        "healthcheckPath": "/health",
+        "healthcheckTimeout": 300,
+        "restartPolicyType": "ON_FAILURE"
+      }
+    },
+    "frontend": {
+      "source": {
+        "root": "frontend"
+      },
+      "build": {
+        "builder": "NIXPACKS",
+        "buildCommand": "npm run build"
+      },
+      "deploy": {
+        "startCommand": "npm run start",
+        "healthcheckPath": "/",
+        "healthcheckTimeout": 300,
+        "restartPolicyType": "ALWAYS"
+      }
+    }
+  }
+}
